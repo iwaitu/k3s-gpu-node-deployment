@@ -40,13 +40,13 @@ kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.
 2022/07/25 18:14:19 Failed to initialize NVML: could not load NVML library.
 2022/07/25 18:14:19 If this is a GPU node, did you set the docker default runtime to `nvidia`
 ```
-1. This used to work previously but with K3S v1.23+ I had issues. You will have to modify /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl add:
+### This used to work previously but with K3S v1.23+ I had issues. You will have to modify /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl add:
 ```
 [plugins.cri.containerd.runtimes.runc.options]
   BinaryName = "/usr/bin/nvidia-container-runtime"
 ```
 
-2. and modify
+### and modify
 ```
 [plugins.cri.containerd.runtimes.runc]
   runtime_type = "io.containerd.runtime.v1.linux"
