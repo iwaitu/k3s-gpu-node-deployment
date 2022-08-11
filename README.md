@@ -57,6 +57,13 @@ to
   runtime_type = "io.containerd.runc.v2"
 ```
 
+after all ,you can try to run a gpu pod now:
+```
+kubectl apply -f https://raw.githubusercontent.com/iwaitu/k3s-gpu-node-deployment/main/gpu.yaml
+```
+if the pod is deploy success, you can access the shell to exec nvidia-smi, you will see your gpu driver infomation.
+
+
 This should get everything running. Then either use the nvidia plugin to define resources or if you like me and want to share the GPU accross multiple pods then just add these ENV variables to your pod
 ```
   NVIDIA_VISIBLE_DEVICES: all
