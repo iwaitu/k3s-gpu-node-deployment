@@ -63,6 +63,6 @@ This should get everything running. Then either use the nvidia plugin to define 
   NVIDIA_DRIVER_CAPABILITIES: all
 ```
 
-# It work for me . Thank you.
+# that's all. I hope this can help you .
 
 
