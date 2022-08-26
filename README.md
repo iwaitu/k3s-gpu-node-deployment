@@ -1,5 +1,8 @@
+
 # k3s-gpu-node-deployment
 Non-Gpu node as k3s master, add another node with gpu to the cluster and make it work
+
+# on your new gpu node: 
 
 ## Install gpg key from nvidia
 ```
@@ -17,8 +20,29 @@ reboot
 ```
 nvidia-smi
 ```
+## now install k3s to your new node
+```
+curl -sfL https://get.k3s.io | sh -
+```
+or if your server in china
+```
+curl -sfL https://rancher-mirror.oss-cn-beijing.aliyuncs.com/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -
+```
+## after this, you need to get two things for add your new node to k3s
+### 1. copy your kubeconfig to your new node in this path /etc/rancher/k3s/k3s.yaml
+### 2. login to your k3s master node and type this command to show the token
+```
+cat /var/lib/rancher/k3s/server/node-token
+```
+### 3. now you can add your new node to k3s cluster
+```
+curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
+```
 
-## Download template from k3d project
+
+# master node
+
+## Download template from k3d project on your k3s master node
 ```
 sudo wget https://k3d.io/v5.4.1/usage/advanced/cuda/config.toml.tmpl -O /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
 ```
