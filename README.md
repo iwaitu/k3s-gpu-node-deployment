@@ -39,13 +39,18 @@ cat /var/lib/rancher/k3s/server/node-token
 curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
 ```
 
-
-# master node
-
 ## Download template from k3d project on your k3s master node
 ```
 sudo wget https://k3d.io/v5.4.1/usage/advanced/cuda/config.toml.tmpl -O /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
 ```
+or use the mirror file in this repos
+```
+sudo wget https://raw.githubusercontent.com/iwaitu/k3s-gpu-node-deployment/main/config.toml.tmpl /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
+```
+
+
+
+# master node
 
 ## Install nvidia plugin. This is optional. You can simply pass in the env variables to pass in GPU access to pods. However this is a nice way to debug whether you have access to the GPUs on contianerd
 ```
@@ -94,6 +99,25 @@ This should get everything running. Then either use the nvidia plugin to define 
   NVIDIA_DRIVER_CAPABILITIES: all
 ```
 
+# if your new gpu node can not run any docker image ,maybe you need to install docker-ce on the new gpu node
+```
+sudo apt-get update
+sudo apt-get install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
 # that's all. I hope this can help you .
 
 
